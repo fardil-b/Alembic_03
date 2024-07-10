@@ -1,0 +1,8 @@
+[MESSAGES CONTROL]
+# Only show warnings with the following IDs
+disable=
+    missing-docstring,
+    unused-argument
+
+[TYPECHECK]
+ignored-modules=alembic.op
