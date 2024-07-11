@@ -17,19 +17,24 @@ branch_labels = None
 depends_on = None
 
 
-def run_sql_script(operation):
-    script_path = os.path.join(os.path.dirname(
-        __file__), 'sql', 'combined_alter_existing_schema.sql')
-    with open(script_path) as f:
+def run_sql_script(script_name):
+    script_path = os.path.join(os.path.dirname(__file__), 'sql', script_name)
+    with open(script_path, 'r') as f:
         sql_commands = f.read()
-    sql_commands = sql_commands.replace(
-        "operation := 'upgrade';", f"operation := '{operation}';")
-    op.execute(sql_commands)
-
+    
+    # Log the SQL commands being executed
+    print(f"Executing SQL script: {script_name}")
+    print(sql_commands)
+    
+    # Execute the entire block as a single command
+    try:
+        op.execute(sql_commands)
+    except Exception as e:
+        print(f"Failed to execute SQL script: {script_name}")
+        print(f"Error: {e}")
 
 def upgrade():
-    run_sql_script('upgrade')
-
+    run_sql_script('upgrade_schema2.sql')
 
 def downgrade():
-    run_sql_script('downgrade')
+    run_sql_script('downgrade_schema2.sql')

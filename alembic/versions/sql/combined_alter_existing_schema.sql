@@ -1,7 +1,9 @@
 DO $$
 DECLARE
-    operation VARCHAR := 'upgrade'; -- Change this to 'downgrade' when running a downgrade
+    operation VARCHAR := '{operation}';
 BEGIN
+    RAISE NOTICE 'Operation: %', operation; -- Print the operation for debugging
+
     IF operation = 'upgrade' THEN
         -- Upgrade logic
         DROP TABLE IF EXISTS my_schema.sales;
@@ -53,9 +55,9 @@ BEGIN
 
     ELSIF operation = 'downgrade' THEN
         -- Downgrade logic
-        DROP TABLE IF EXISTS my_schema.sales;
-        DROP TABLE IF EXISTS my_schema.products;
-        DROP TABLE IF EXISTS my_schema.user;
-        DROP SCHEMA IF EXISTS my_schema;
+        DROP TABLE IF EXISTS my_schema.sales CASCADE;
+        DROP TABLE IF EXISTS my_schema.products CASCADE;
+        DROP TABLE IF EXISTS my_schema.user CASCADE;
+        DROP SCHEMA IF EXISTS my_schema CASCADE;
     END IF;
 END $$;
